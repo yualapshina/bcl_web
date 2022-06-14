@@ -6,12 +6,15 @@ Web framework for biclustering algorithms - on Django Python based on biclustlib
 ### how to install:
 
 0) Install Python, if you don't already have it.
+
 1) Download the package.
+
 2) In your command line, switch to the package's directory and run:
 
 `pip install requirements.txt`
 
 Please note that you will have to install R along the way if you don't already have it.
+
 3) To run the app, run in the command line
 
  `python manage.py runserver`
