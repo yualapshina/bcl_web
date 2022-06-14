@@ -31,6 +31,7 @@ pycparser==2.21
 pydot==1.4.2
 pyparsing==3.0.9
 python-dateutil==2.8.2
+python-dotenv==0.20.0
 pytz==2022.1
 pytz-deprecation-shim==0.1.0.post0
 requests==2.28.0
