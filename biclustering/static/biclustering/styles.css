@@ -1,0 +1,190 @@
+
+body {
+    background-color: #fff0c6;
+    overflow: hidden;
+}
+div.picarea {
+    position: absolute;
+    max-height: 630px;
+    max-width: 900px;
+    overflow: auto;
+}
+div.main {
+    background-color: white;
+    position: absolute;
+    width: 430px;
+    border: outset 3px #cccccc;
+    border-radius: 10px;
+    font-family: Verdana, sans-serif;
+    color: #4d4d4d;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+div.main.left {
+    height: 290px;
+    left: 0;
+    margin: 10px;
+}
+div.main.middle {
+    height: 610px;
+    right: 0;
+    left: 0;
+    margin: 10px auto 10px auto;
+}
+div.main.right {
+    height: 290px;
+    right: 0;
+    margin: 10px;
+}
+div.main.top {
+    top: 10px;
+}
+div.main.bottom {
+    top: 329px;
+}
+div.main.run {
+    height: 610px;
+    right: 0;
+    margin: 10px 10px 10px 0;
+}
+div.main.lonely {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 200px;
+    padding: 15px;
+    text-align: center;
+}
+img {
+    border: outset 3px #cccccc;
+    border-radius: 10px;
+    margin: 10px;
+}
+p.normal {
+    font-size: 18px;
+    text-align: left;
+    margin: 7px 20px;;
+}
+p.warning {
+    color: #ff751a;
+    font-size: 18px;
+    text-align: center;
+    margin: 0 10px 5px 10px;
+}
+p.header {
+    font-size: 24px;
+    text-align: center;
+    margin: 10px;
+}
+select {
+    font-size: 14px;
+    font-family: Verdana, sans-serif;
+    color: #4d4d4d;
+    text-align: center;
+    margin: 10px;
+    padding: 5px;
+}
+input.button {
+    border: outset 2px #cccccc;
+    border-radius: 10px;
+    color: #4d4d4d;
+    text-align: center;
+    font-size: 16px;
+    margin: 15px 30px;
+    height: 45px;
+}
+input.button.run {
+    width: 160px;
+    margin: 10px 133px;
+    background-color: #8cff1a;
+}
+input.button.run:hover {
+    background-color: #a6ff4d;
+}
+input.button.save {
+    background-color: #84e1e1;
+    margin: 10px 25px;
+    width: 160px;
+}
+input.button.save:hover {
+    background-color: #adebeb;
+}
+input.button.back {
+    background-color: #ff4d4d;
+    margin: 10px 25px;
+    width: 160px;
+}
+input.button.back:hover {
+    background-color: #ff8080;
+}
+input.button.error {
+    background-color: #ff4d4d;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    margin: 10px auto;
+    height: 40px;
+    width: 70px;
+}
+input.button.error:hover {
+    background-color: #ff8080;
+}
+input.text {
+    margin: 5px 5px;
+    width: 60px;
+}
+input.checkbox {
+    margin: 10px;
+}
+input.table {
+    border: hidden;
+    background-color: white;
+    font-size: 20px;
+    font-family: Verdana, sans-serif;
+    color: #cc5200;
+    margin: 10px 0;
+}
+input.table:hover {
+    color: #ff751a;
+}
+fieldset {
+    margin: 10px;
+    border-radius: 10px;
+}
+legend {
+    margin: 0 10px;
+}
+label.levels {
+    margin: 10px;
+}
+form {
+    display: inline;
+}
+div.tooltip {
+    display: inline;
+    color: #cc5200;
+    margin: 10px;
+}
+div.tooltip span.tooltiptext {
+    visibility: hidden;
+    background-color: white;
+    border: outset 2px #ff751a;
+    border-radius: 5px;
+    max-width: 300px;
+    padding: 10px;
+    position: absolute;
+    font-size: 14px;
+}
+div.tooltip:hover {
+    color: #ff751a;
+}
+div.tooltip:hover span.tooltiptext {
+    visibility: visible;
+    color: #cc5200;
+}
+div.file {
+    margin: 10px 0;
+}

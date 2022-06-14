@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'biclustering/styles.css' %}">
+    <title>BCL Web - Run </title>
+</head>
+<body>
+    <div class="picarea">
+        {% for graphic in graphics %}
+            <img src="{% static graphic %}">
+        {% endfor %}
+    </div>
+    <div class="main run">
+        <form action="{% url 'save' %}" method="get">
+            <input type="submit" class="button save" name="save" value="Save results...">
+        </form>
+        <form action="{% url 'main' %}" method="get">
+            <input type="submit" class="button back" name="back" value="Back to Main">
+        </form>
+        <p class="header">Tables</p>
+        <ul>
+            {% for table in tables %}
+                <div>
+                    <form id="{{ table }}_form" action="{% url 'table' num=forloop.counter0 %}" method="get">
+                        <input type="submit" class="table" name="{{ table }}"
+                           value="{{ table }}" form="{{ table }}_form">
+                    </form>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

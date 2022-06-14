@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'biclustering/styles.css' %}">
+    <title>BCL Web - Main</title>
+</head>
+<body>
+<form id="run_form" action="{% url 'run' %}" method="get">
+    <form id="helperform" action="" method="get"></form>
+    <div class="main left top">
+        <p class="header">Select dataset</p>
+        <div>
+            <input type="radio" class="checkbox" id="dataset_select" name="dataset"
+                   value="select" required checked form="run_form">
+            <label for="dataset_select">I'll select one of the built-ins</label>
+        </div>
+        <select class="select" name="dataset_dropdown" form="run_form">
+            {% for dataset in datasets %}
+                <option value="{{ forloop.counter0 }}">{{ dataset }}</option>
+            {% endfor %}
+        </select>
+        <div>
+            <input type="radio" class="checkbox" id="dataset_upload" name="dataset"
+                   value="upload" required form="run_form">
+            <label for="dataset_upload">I'll upload</label>
+        </div>
+        <div class="file">
+            <div class="tooltip">(?)
+                <span class="tooltiptext">Upload your own dataset as a .csv file
+                    with first column titled "gene_id". </span>
+            </div>
+            <input type="file" name="dataset_file" accept=".csv" form="run_form">
+        </div>
+    </div>
+    <div class="main left bottom">
+        <p class="header">Set other settings</p>
+        <div>
+            <div class="tooltip">(?)
+                <span class="tooltiptext">Biclusterings, that are larger than this amount, will be reduced to it by
+                    taking a random sample. No reduction is done if set to -1. </span>
+            </div>
+            <label for="reduction_level" class="levels">Reduction level</label>
+            <input class="text" type="text" id="reduction_level" name="reduction_level" form="run_form" value="10">
+        </div>
+        <div>
+            <div class="tooltip">(?)
+                <span class="tooltiptext">Number of bins used to discretize data.
+                    Setting to 2 will get you binary data. </span>
+            </div>
+            <label for="discretion_level" class="levels">Discretion level</label>
+            <input class="text" type="text" id="discretion_level" name="discretion_level" form="run_form" value="30">
+        </div>
+        <div>
+            <div class="tooltip">(?)
+                <span class="tooltiptext">When using multiprocessing, more CPU is used but
+                    algorithms run significantly faster. </span>
+            </div>
+            <input type="checkbox" class="checkbox" id="multiprocessing" name="multiprocessing" form="run_form" checked>
+            <label for="multiprocessing">Use multiprocessing?</label>
+        </div>
+        <input type="submit" class="button run" name="run" value="Run!" form="run_form">
+    </div>
+    <div class="main middle">
+        <p class="header">Set up the algorithms</p>
+        <fieldset>
+                <legend>
+                    <input type="checkbox" class="checkbox" id="CCA" name="CCA" form="run_form" checked>
+                    <label for="CCA">Cheng-Church Algorithm</label>
+                </legend>
+                <div>
+                    <label for="CCA_num_biclusters">num_biclusters</label>
+                    <input class="text" type="text" value="10" form="run_form"
+                       id="CCA_num_biclusters" name="CCA_num_biclusters">
+                </div>
+                <div>
+                    <label for="CCA_msr_threshold">msr_threshold</label>
+                    <input class="text" type="text" value="estimate" form="run_form"
+                       id="CCA_msr_threshold" name="CCA_msr_threshold">
+                </div>
+                <div>
+                    <label for="CCA_multiple_node_deletion_threshold">multiple_node_deletion_threshold</label>
+                    <input class="text" type="text" value="1.2" form="run_form"
+                       id="CCA_multiple_node_deletion_threshold" name="CCA_multiple_node_deletion_threshold">
+                </div>
+                <div>
+                    <label for="CCA_data_min_cols">data_min_cols</label>
+                    <input class="text" type="text" value="100" form="run_form"
+                       id="CCA_data_min_cols" name="CCA_data_min_cols">
+                </div>
+            </fieldset>
+        <fieldset>
+                <legend>
+                    <input type="checkbox" class="checkbox" id="BiBit" name="BiBit" form="run_form" checked>
+                    <label for="BiBit">Bit Pattern Biclustering Algorithm</label>
+                </legend>
+                <div>
+                    <label for="BiBit_min_rows">min_rows</label>
+                    <input class="text" type="text" value="2" form="run_form"
+                       id="BiBit_min_rows" name="BiBit_min_rows">
+                </div>
+                <div>
+                    <label for="BiBit_min_cols">min_cols</label>
+                    <input class="text" type="text" value="2" form="run_form"
+                       id="BiBit_min_cols" name="BiBit_min_cols">
+                </div>
+        </fieldset>
+        <fieldset>
+                <legend>
+                    <input type="checkbox" class="checkbox" id="LAS" name="LAS" form="run_form" checked>
+                    <label for="LAS">Large Average Submatrices</label>
+                </legend>
+                <div>
+                    <label for="LAS_num_biclusters">num_biclusters</label>
+                    <input class="text" type="text" value="10" form="run_form"
+                       id="LAS_num_biclusters" name="LAS_num_biclusters">
+                </div>
+                <div>
+                    <label for="LAS_score_threshold">score_threshold</label>
+                    <input class="text" type="text" value="1.0" form="run_form"
+                       id="LAS_score_threshold" name="LAS_score_threshold">
+                </div>
+                <div>
+                    <label for="LAS_randomized_searches">randomized_searches</label>
+                    <input class="text" type="text" value="1000" form="run_form"
+                       id="LAS_randomized_searches" name="LAS_randomized_searches">
+                </div>
+                <div>
+                    <label for="LAS_transform">transform</label>
+                    <input class="checkbox" type="checkbox" form="run_form"
+                       id="LAS_transform" name="LAS_transform">
+                </div>
+                <div>
+                    <label for="LAS_scale_data">scale_data</label>
+                    <input class="checkbox" type="checkbox" form="run_form"
+                       id="LAS_scale_data" name="LAS_scale_data" checked>
+                </div>
+        </fieldset>
+        <fieldset>
+                <legend>
+                    <input type="checkbox" class="checkbox" id="Spectral" name="Spectral" form="run_form" checked>
+                    <label for="Spectral">Spectral</label>
+                </legend>
+                <div>
+                    <label for="Spectral_n_clusters">n_clusters</label>
+                    <input class="text" type="text" value="2" form="run_form"
+                       id="Spectral_n_clusters" name="Spectral_n_clusters">
+                </div>
+                <div>
+                    <label for="Spectral_n_components">n_components</label>
+                    <input class="text" type="text" value="6" form="run_form"
+                       id="Spectral_n_components" name="Spectral_n_components">
+                </div>
+                <div>
+                    <label for="Spectral_n_best">n_best</label>
+                    <input class="text" type="text" value="3" form="run_form"
+                       id="Spectral_n_best" name="Spectral_n_best">
+                </div>
+                <div>
+                    <label for="Spectral_n_svd_vecs">n_svd_vecs</label>
+                    <input class="text" type="text" value="" form="run_form"
+                       id="Spectral_n_svd_vecs" name="Spectral_n_svd_vecs">
+                </div>
+                <div>
+                    <label for="Spectral_n_init">n_init</label>
+                    <input class="text" type="text" value="10" form="run_form"
+                       id="Spectral_n_init" name="Spectral_n_init">
+                </div>
+                <div>
+                    <label for="Spectral_random_state">random_state</label>
+                    <input class="text" type="text" value="" form="run_form"
+                       id="Spectral_random_state" name="Spectral_random_state">
+                </div>
+                <div>
+                    <select class="select" name="Spectral_method" form="run_form">
+                        <option value="bistochastic" selected>method: bistochastic</option>
+                        <option value="scale">method: scale</option>
+                        <option value="log">method: log</option>
+                    </select>
+                </div>
+                <div>
+                    <select class="select" name="Spectral_svd_method" form="run_form">
+                        <option value="randomized" selected>svd_method: randomized</option>
+                        <option value="arpack">svd_method: arpack</option>
+                    </select>
+                </div>
+                <div>
+                    <select class="select" name="Spectral_init" form="run_form">
+                        <option value="k-means++" selected>init: k-means++</option>
+                        <option value="random">init: random</option>
+                    </select>
+                </div>
+        </fieldset>
+        <fieldset>
+                <legend>
+                    {% if disabled_by_os %}
+                    <input type="checkbox" class="checkbox" id="Bimax_dis" name="Bimax_dis" form="run_form" disabled>
+                    <label for="Bimax_dis">R Binary Inclusion Algorithm</label>
+                    {% else %}
+                    <input type="checkbox" class="checkbox" id="Bimax" name="Bimax" form="run_form" checked>
+                    <label for="Bimax">R Binary Inclusion Algorithm</label>
+                    {% endif %}
+                </legend>
+                <div>
+                    <p class="warning">does not currently run on Windows</p>
+                </div>
+                <div>
+                    <label for="Bimax_num_biclusters">num_biclusters</label>
+                    <input class="text" type="text" value="10" form="run_form"
+                       id="Bimax_num_biclusters" name="Bimax_num_biclusters">
+                </div>
+                <div>
+                    <label for="Bimax_min_rows">min_rows</label>
+                    <input class="text" type="text" value="2" form="run_form"
+                       id="Bimax_min_rows" name="Bimax_min_rows">
+                </div>
+                <div>
+                    <label for="Bimax_min_cols">min_cols</label>
+                    <input class="text" type="text" value="2" form="run_form"
+                       id="Bimax_min_cols" name="Bimax_min_cols">
+                </div>
+        </fieldset>
+        <fieldset>
+                <legend>
+                    {% if disabled_by_os %}
+                    <input type="checkbox" class="checkbox" id="xMotifs_dis" name="xMotifs_dis" form="run_form" disabled>
+                    <label for="xMotifs_dis">R Conserved GE Motifs</label>
+                    {% else %}
+                    <input type="checkbox" class="checkbox" id="xMotifs" name="xMotifs" form="run_form" checked>
+                    <label for="xMotifs">R Conserved GE Motifs</label>
+                    {% endif %}
+                </legend>
+                <div>
+                    <p class="warning">does not currently run on Windows</p>
+                </div>
+                <div>
+                    <label for="xMotifs_num_biclusters">num_biclusters</label>
+                    <input class="text" type="text" value="10" form="run_form"
+                       id="xMotifs_num_biclusters" name="xMotifs_num_biclusters">
+                </div>
+                <div>
+                    <label for="xMotifs_num_seeds">num_seeds</label>
+                    <input class="text" type="text" value="10" form="run_form"
+                       id="xMotifs_num_seeds" name="xMotifs_num_seeds">
+                </div>
+                <div>
+                    <label for="xMotifs_num_sets">num_sets</label>
+                    <input class="text" type="text" value="1000" form="run_form"
+                       id="xMotifs_num_sets" name="xMotifs_num_sets">
+                </div>
+                <div>
+                    <label for="xMotifs_set_size">set_size</label>
+                    <input class="text" type="text" value="7" form="run_form"
+                       id="xMotifs_set_size" name="xMotifs_set_size">
+                </div>
+                <div>
+                    <label for="xMotifs_alpha">alpha</label>
+                    <input class="text" type="text" value="0.05" form="run_form"
+                       id="xMotifs_alpha" name="xMotifs_alpha">
+                </div>
+        </fieldset>
+        <fieldset>
+                <legend>
+                    {% if disabled_by_os %}
+                    <input type="checkbox" class="checkbox" id="Plaid_dis" name="Plaid_dis" form="run_form" disabled>
+                    <label for="Plaid_dis">R Plaid</label>
+                    {% else %}
+                    <input type="checkbox" class="checkbox" id="Plaid" name="Plaid" form="run_form" checked>
+                    <label for="Plaid">R Plaid</label>
+                    {% endif %}
+                </legend>
+                <div>
+                    <p class="warning">does not currently run on Windows</p>
+                </div>
+                <div>
+                    <label for="Plaid_num_biclusters">num_biclusters</label>
+                    <input class="text" type="text" value="10" form="run_form"
+                       id="Plaid_num_biclusters" name="Plaid_num_biclusters">
+                </div>
+                <div>
+                    <label for="Plaid_row_prunning_threshold">row_prunning_threshold</label>
+                    <input class="text" type="text" value="0.7" form="run_form"
+                       id="Plaid_row_prunning_threshold" name="Plaid_row_prunning_threshold">
+                </div>
+                <div>
+                    <label for="Plaid_col_prunning_threshold">col_prunning_threshold</label>
+                    <input class="text" type="text" value="0.7" form="run_form"
+                       id="Plaid_col_prunning_threshold" name="Plaid_col_prunning_threshold">
+                </div>
+                <div>
+                    <label for="Plaid_significance_tests">significance_tests</label>
+                    <input class="text" type="text" value="0" form="run_form"
+                       id="Plaid_significance_tests" name="Plaid_significance_tests">
+                </div>
+                <div>
+                    <label for="Plaid_back_fitting_steps">back_fitting_steps</label>
+                    <input class="text" type="text" value="1" form="run_form"
+                       id="Plaid_back_fitting_steps" name="Plaid_back_fitting_steps">
+                </div>
+                <div>
+                    <label for="Plaid_initialization_iterations">initialization_iterations</label>
+                    <input class="text" type="text" value="6" form="run_form"
+                       id="Plaid_initialization_iterations" name="Plaid_initialization_iterations">
+                </div>
+                <div>
+                    <label for="Plaid_iterations_per_layer">iterations_per_layer</label>
+                    <input class="text" type="text" value="10" form="run_form"
+                       id="Plaid_iterations_per_layer" name="Plaid_iterations_per_layer">
+                </div>
+                <div>
+                    <label for="Plaid_fit_background_layer">fit_background_layer</label>
+                    <input class="checkbox" type="checkbox" form="run_form"
+                       id="Plaid_fit_background_layer" name="Plaid_fit_background_layer" checked>
+                </div>
+        </fieldset>
+    </div>
+    <div class="main right top">
+        <p class="header">Select graphics to draw</p>
+            <div>
+                <input type="checkbox" class="checkbox"  form="run_form"
+                       id="graphic_goea" name="graphic_goea">
+                <label for="graphic_goea">GOEA report</label>
+                <div class="tooltip">(?)
+                <span class="tooltiptext">Gene Ontology Enrichment Analysis provides
+                    additional data for gene datasets but runs significantly slower. </span>
+                </div>
+            </div>
+        {% for graphic in graphics %}
+            <div>
+                <input type="checkbox" class="checkbox"  form="run_form"
+                       id="graphic_{{ forloop.counter0 }}"
+                       name="graphic_{{ forloop.counter0 }}" checked>
+                <label for="graphic_{{ forloop.counter0 }}">{{ graphic }}</label>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="main right bottom">
+        <p class="header">Select tables to show</p>
+            <div>
+                <input type="checkbox" class="checkbox"  form="run_form"
+                       id="table_goea" name="table_goea">
+                <label for="table_goea">GOEA report</label>
+                <div class="tooltip">(?)
+                <span class="tooltiptext">Gene Ontology Enrichment Analysis provides
+                    additional data for gene datasets but runs significantly slower. </span>
+                </div>
+            </div>
+        {% for table in tables %}
+            <div>
+                <input type="checkbox" class="checkbox"  form="run_form"
+                       id="table_{{ forloop.counter0 }}"
+                       name="table_{{ forloop.counter0 }}" checked>
+                <label for="table_{{ forloop.counter0 }}">{{ table }}</label>
+            </div>
+        {% endfor %}
+    </div>
+</form>
+</body>
+</html>

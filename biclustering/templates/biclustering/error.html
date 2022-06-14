@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'biclustering/styles.css' %}">
+    <title>BCL Web - Error</title>
+</head>
+<body>
+    <form action="{% url 'main' %}" method="get">
+    <div class="main lonely">
+        <p class="header">{{ message }}</p>
+        <input type="submit" class="button error" name="OK" value="OK">
+    </div>
+    </form>
+</body>
+</html>
