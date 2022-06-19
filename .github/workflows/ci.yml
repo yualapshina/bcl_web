@@ -13,8 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: build image
-      run: docker-compose up -d
     - name: login to docker hub
       uses: docker/login-action@v2
       with:
