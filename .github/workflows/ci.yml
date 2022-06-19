@@ -6,9 +6,6 @@ on:
 
     workflow_dispatch:
 
-env:
-  artifact_name: bcl_web_${{ github.run_number }}
-
 
 jobs:
   build:
@@ -25,4 +22,4 @@ jobs:
     - name: download
       uses: ishworkh/docker_image_artifact_download@v1
       with:
-        image: "bcl_web:v${{ artifact_name }}"
+        image: "bcl_web:v${{ github.run_number }}"
