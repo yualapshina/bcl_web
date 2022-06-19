@@ -7,7 +7,7 @@ on:
     workflow_dispatch:
 
 env:
-  artifact_name: bcl_web_${{ GITHUB_RUN_NUMBER }}
+  artifact_name: bcl_web_${{ github.run_number }}
 
 
 jobs:
