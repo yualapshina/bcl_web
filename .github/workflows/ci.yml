@@ -18,7 +18,7 @@ jobs:
     - name: upload
       uses: ishworkh/docker_image_artifact_upload@v1
       with:
-        image: "bcl_web:v${{ artifact_name }}"
+        image: "bcl_web:v${{ github.run_number }}"
     - name: download
       uses: ishworkh/docker_image_artifact_download@v1
       with:
