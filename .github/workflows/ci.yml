@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [ devops ]
+
+    workflow_dispatch:
+
+env:
+  artifact_name: bcl_web_${{ GITHUB_RUN_NUMBER }}
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+      uses: actions/checkout@v3
+
+      - name: build
+       run: docker-compose up -d
+
+      - name: upload
+      uses: ishworkh/docker_image_artifact_upload@v1
+      with:
+        image: "bcl_web:v${{ artifact_name }}"
+
+      - name: download
+      uses: ishworkh/docker_image_artifact_download@v1
+      with:
+        image: "bcl_web:v${{ artifact_name }}"
