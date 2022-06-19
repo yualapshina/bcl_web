@@ -13,13 +13,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: build
+    - name: build image
       run: docker-compose up -d
-    - name: upload
-      uses: ishworkh/docker_image_artifact_upload@v1
+    - name: login to docker hub
+      uses: docker/login_action@v1
       with:
-        image: "bcl_web:v${{ github.run_number }}"
-    - name: download
-      uses: ishworkh/docker_image_artifact_download@v1
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+    - name: set up docker buildx
+      uses: docker/setup-buildx-action@v1
+    - name: build and push
+      uses: docker/build-push-action@v2
       with:
-        image: "bcl_web:v${{ github.run_number }}"
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: bcl_web:${{ github.run_number }}
+#        cache_from: type=registry,ref=bcl_web:buildcache
+#        cache_to: type=registry,ref=bcl_web:buildcache,mode=max
