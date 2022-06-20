@@ -34,3 +34,5 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/devops:v${{ github.run_number }}
+
+#        let's add this as a minor change to the project
