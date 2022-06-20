@@ -4,8 +4,6 @@ on:
   push:
     branches: [ devops ]
 
-    workflow_dispatch:
-
 
 jobs:
   build:
@@ -13,9 +11,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: set up qemu
-      uses: docker/setup-qemu-action@v1
 
     - name: set up docker buildx
       id: buildx
