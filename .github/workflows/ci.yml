@@ -33,6 +33,6 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: yualapshina/devops/bcl_web:v${{ github.run_number }}
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/devops:latest
 #        cache_from: type=registry,ref=bcl_web:buildcache
 #        cache_to: type=registry,ref=bcl_web:buildcache,mode=max
