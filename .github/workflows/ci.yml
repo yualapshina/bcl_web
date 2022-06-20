@@ -34,3 +34,5 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/devops:v${{ github.run_number }}
+        cache_from: ${{ secrets.DOCKER_HUB_USERNAME }}/devops:buildcache
+        cache_to: ${{ secrets.DOCKER_HUB_USERNAME }}/devops:buildcache,mode=max
